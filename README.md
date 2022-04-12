@@ -1,15 +1,9 @@
----
-attachments: [equation.JPG, icon.png]
-pinned: true
-title: MNA equation builder
-created: '2022-04-12T08:31:09.974Z'
-modified: '2022-04-12T09:26:49.237Z'
----
+
 
 # MNA equation builder
 We build a program generates the following MNA equations from the input linear circuit netlist
 <p align="center">
-  <img src="@attachment/equation.JPG">
+  <img src="https://github.com/ppguo/MNA-equation-Builder-for-SPICE/blob/main/attachments/equation.JPG">
 </p>
 
 ## Input
