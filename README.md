@@ -8,7 +8,7 @@ We build a program generates the following MNA equations from the input linear c
 
 ## Input
   A SPICE format netlist file
-  * Resistor, Inductance, Mutual Inductance, Capacitor Independent Voltage and Current Source are supported
+  * MOSFET, Resistor, Inductance, Mutual Inductance, Capacitor Independent Voltage and Current Source are supported
   * Subcircuit is supported
 ## Output
 *  Matrix or Vector C,G,B,L,X
