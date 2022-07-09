@@ -1,4 +1,4 @@
-function [new_M,new_I] = stamp_MOSFET(old_M,old_I,Xn,D);
+function [new_M,new_I] = stamp_MOSFET(old_M,old_I,Xn,Xnf,D,delta_t);
 %STAMP_MOSFET : stamps entries corresponding to an independent voltage source.
 %
 %                    syntax :  [new_M,new_I,new_row] = stamp_ind_vsource(old_M,old_I,D)
@@ -23,8 +23,10 @@ l = D(M_L_);
 Vt = D(M_VT_);
 u = D(M_MU_);
 cox = D(M_COX_);
+CJ0 = D(M_CJ0_);
 lambda = D(M_LAMBDA_);
 k = w / l * u * cox;
+Cg = cox*w*l*0.5;
 if ng>0 && ns>0,
     Vgs = Xn(ng)-Xn(ns);
 elseif ng>0,
@@ -39,23 +41,23 @@ elseif nd>0,
     else
     Vds = -Xn(ns);
 end
-
+Ids = 0;
 if type == NMOS_
     if (Vgs > Vt) && (Vds < Vgs - Vt)
-        Gm = k * Vds
-        Gds = k * (Vgs - Vt - Vds)
-        Ids = k * ((Vgs - Vt) * Vds -Vds*Vds/2)
-    elseif (Vgs > Vt) && (Vds > Vgs -Vt)
-        Gm = k * (Vgs-Vt) * (1 + lambda * Vds)
-        Gds = k * 0.5 * (Vgs-Vt)^2  * lambda
-        Ids = k * 0.5 *(Vgs-Vt)^2* (1 + lambda * Vds)
+        Gm = k * Vds;
+        Gds = k * (Vgs - Vt - Vds);
+        Ids = k * ((Vgs - Vt) * Vds -Vds*Vds/2);
+    elseif (Vgs > Vt) && (Vds >= Vgs -Vt)
+        Gm = k * (Vgs-Vt) * (1 + lambda * Vds);
+        Gds = k * 0.5 * (Vgs-Vt)^2  * lambda;
+        Ids = k * 0.5 *(Vgs-Vt)^2* (1 + lambda * Vds);
     end
 else
     if (Vgs < Vt) && (Vds > Vgs - Vt)
         Gm = -k * Vds;
         Gds = -k * (Vgs - Vt - Vds);
         Ids = -k * ((Vgs - Vt) * Vds -Vds*Vds/2);
-    elseif (Vgs < Vt) && (Vds < Vgs -Vt)
+    elseif (Vgs < Vt) && (Vds <= Vgs -Vt)
         Gm = -k * (Vgs-Vt) * (1 - lambda * Vds);
         Gds = k * 0.5 * (Vgs-Vt)^2  * lambda;
         Ids = -k * 0.5 *(Vgs-Vt)^2* (1 - lambda * Vds);
@@ -65,11 +67,10 @@ end
 if nd>length_M,  new_M(nd,nd)=0;end
 if ng>length_M,  new_M(ng,ng)=0;end
 if ns>length_M,  new_M(ns,ns)=0;end
-length_M=length(new_M);
 
 
 if (type == NMOS_ && Vgs > Vt) || (type == PMOS_ && Vgs < Vt)
-    In = Ids-Gm*Vgs-Gds*Vds
+    In = Ids-Gm*Vgs-Gds*Vds;
     if (nd > 0)
         new_M(nd,nd) = new_M(nd,nd)+Gds;
         if ns>0, new_M(nd,ns) = new_M(nd,ns)-Gds-Gm; end
@@ -80,8 +81,13 @@ if (type == NMOS_ && Vgs > Vt) || (type == PMOS_ && Vgs < Vt)
         new_M(ns,nd) = new_M(ns,nd)-Gds;
         if ns>0, new_M(ns,ns) = new_M(ns,ns)+Gds+Gm; end
         if ng>0, new_M(ns,ng) = new_M(ns,ng)-Gm;      end
-        new_I(ns) = new_I(ns)+In
+        new_I(ns) = new_I(ns)+In;
     end
 end
+%add parasite Capacitors
+if nd>0, [new_M,new_I,new_row] = stamp_Capacitor_MOSFET(new_M,new_I,nd,-1,CJ0,Xnf,delta_t); end%add Cd
+if ns>0, [new_M,new_I,new_row] = stamp_Capacitor_MOSFET(new_M,new_I,ns,-1,CJ0,Xnf,delta_t); end%add Cs
+[new_M,new_I,new_row] = stamp_Capacitor_MOSFET(new_M,new_I,ng,ns,Cg,Xnf,delta_t);%add Cgs
+[new_M,new_I,new_row] = stamp_Capacitor_MOSFET(new_M,new_I,ng,nd,Cg,Xnf,delta_t);%add Cgd
 end
 

@@ -1,4 +1,4 @@
-function [new_M,new_I,new_row] = stamp_Capacitor(old_M,old_I,D,Xn,delta_t);
+function [new_M,new_I,new_row] = stamp_Capacitor_MOSFET(old_M,old_I,n1,n2,C_value,Xn,delta_t);
 %STAMP_IND_VSOURCE : stamps entries corresponding to an independent voltage source.
 %
 %                    syntax :  [new_M,new_I,new_row] = stamp_ind_vsource(old_M,old_I,D)
@@ -14,9 +14,9 @@ global C_N1_ C_N2_ C_IC_ C_VALUE_
 new_M=old_M;
 new_I=old_I;
 length_M=length(old_M);
-n1 = D(C_N1_);
-n2 = D(C_N2_);
-C_value = D(C_VALUE_);
+% n1 = D(C_N1_);
+% n2 = D(C_N2_);
+% C_value = D(C_VALUE_);
 
 if n1>length_M,  new_M(n1,n1)=0;end;
 if n2>length_M,  new_M(n2,n2)=0;end;
@@ -25,7 +25,7 @@ if n1>0 && n2>0,
     Vn = Xn(n1)-Xn(n2);
 elseif n1>0,
     Vn = Xn(n1);
-else
+elseif n2>0,
     Vn =-Xn(n2);
 end
 
