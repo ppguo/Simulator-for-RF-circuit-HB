@@ -13,7 +13,7 @@ global L_N1_ L_N2_ L_VALUE_ L_IC_
 global K_ELEM1_ K_ELEM2_ K_VALUE_
 global S_N1_ S_N2_ S_VALUE_ S_IC_
 global W_ELEM1_ W_ELEM2_ W_VALUE_
-global DC_ AC_ PWL_
+global DC_ AC_ PWL_ SIN_
 global V_N1_ V_N2_ V_VALUE_ V_TYPE_ V_POINTS_ V_PHASE_
 global I_N1_ I_N2_ I_VALUE_ I_TYPE_ I_POINTS_ I_PHASE_
 global E_VALUE_ E_N1_ E_N2_ E_CN1_ E_CN2_
@@ -91,6 +91,7 @@ W_ELEM2_       = 4;
 DC_         = 0;
 AC_         = 1;
 PWL_        = 2;
+SIN_        = 3;
 % for voltage sources
 V_VALUE_    = 2;
 V_N1_       = 3;

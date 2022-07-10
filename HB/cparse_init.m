@@ -5,7 +5,7 @@ global TYPE_ MAG_ VALUE_ PHASE_ IC_ DAC_ N1_ N2_ CN1_ CN2_ FNUM_
 global MOS_MID_ MOS_W_ MOS_L_ MOS_N1_ MOS_N2_ MOS_N3_ MOS_TYPE_
 global MOD_ID_ MOD_VT_ MOD_MU_ MOD_COX_ MOD_LAMBDA_ MOD_CJ0_
 global M_MID_
-
+global SIN_DC_ SIN_AC_ SIN_FREQ_ SIN_PHASE_
 % For the ELEM Vector
 %! TYPE_  = 1; %! is being defined now in parser_init.m, MB
 MAG_   = 2;
@@ -41,3 +41,9 @@ MOD_MU_     = 4;
 MOD_COX_    = 5;
 MOD_LAMBDA_ = 6;
 MOD_CJ0_    = 7;
+
+% for V_SIN
+SIN_DC_=31;
+SIN_AC_=32;
+SIN_FREQ_=33;
+SIN_PHASE_=34;
