@@ -2,7 +2,7 @@
 
 # HB Analysis for RF Circuit
 A MATLAB program to perform HB Analysis for RF circuit, main functions are:
-  * a simple automatic parser (style is borrowed from CMU 18-762 which was taught by Prof. Xin Li)
+  * a simple automatic parser (style is borrowed from CMU class)
   * Transient analysis
   * Harmonic Balance Analysis
 
